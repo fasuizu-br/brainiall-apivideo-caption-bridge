@@ -1,0 +1,16 @@
+{
+  "name": "brainiall-apivideo-caption-bridge",
+  "version": "1.0.0",
+  "description": "Validate a reviewed WebVTT file and upload it once to an authorized api.video video.",
+  "type": "module",
+  "bin": {
+    "brainiall-apivideo-caption": "src/cli.mjs"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT"
+}
