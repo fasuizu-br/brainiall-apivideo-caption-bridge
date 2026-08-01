@@ -41,6 +41,12 @@ Keep `API_VIDEO_API_KEY` in a server-side environment or secret manager. Do not 
 
 The upload request is deliberately attempted once. If the network result is ambiguous, inspect the caption state in api.video before deciding whether another upload is safe.
 
+## Destination matrix (C70)
+
+`src/destinations.mjs` is a credential-free planning helper for teams that move captions between a speech/transcript pipeline and a video platform. It records the public format, language, authorization boundary and post-upload status check for `api.video`, Cloudflare Stream and Brightcove. `planCaptionHandoff({ destination, language, reviewed })` returns a handoff plan and keeps `canUpload` false until the caller marks the file reviewed.
+
+The helper does not contain a video id, media, token or API key, and it does not call any provider. Use the official destination documentation linked by each profile before operating a caller-owned account.
+
 ## Test
 
 ```bash
