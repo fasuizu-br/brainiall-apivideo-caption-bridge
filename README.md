@@ -47,6 +47,10 @@ The upload request is deliberately attempted once. If the network result is ambi
 
 The helper does not contain a video id, media, token or API key, and it does not call any provider. Use the official destination documentation linked by each profile before operating a caller-owned account.
 
+## LMS acceptance matrix (C71)
+
+`src/lms.mjs` adds the same review-first boundary for Canvas, Moodle, Panopto and YuJa. `planLmsCaptionAcceptance({ lms, language, reviewed })` produces a provider-specific acceptance checklist without a course id, media bytes or account credential. It is a local planning primitive; it does not call an LMS or certify accessibility.
+
 ## Test
 
 ```bash
