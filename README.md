@@ -21,9 +21,10 @@ npx brainiall-apivideo-caption reviewed.vtt vi123 pt-BR
 ```
 
 The extractor searches only bounded fields named `vtt`, `webvtt`, `srt`, `caption(s)` or
-`subtitle(s)` and requires a recognizable cue marker. It is a local convenience for an
-authorized run export, not an Apify scraper, a transcription service, or proof of Actor
-ownership, quality, usage, or revenue. Review the complete output before uploading.
+`subtitle(s)`. It can also convert a timestamped `transcript.segments` array (the shape
+used by some Actors) into WebVTT, but it still requires review of the complete output.
+It is a local convenience for an authorized run export, not an Apify scraper, a
+transcription service, or proof of Actor ownership, quality, usage, or revenue.
 
 api.video documents an important edge case: a malformed WebVTT may receive HTTP 200 but not appear in the player. The bridge therefore rejects missing headers and cue timing before the upload. It still cannot prove semantic accuracy or full WebVTT conformance.
 

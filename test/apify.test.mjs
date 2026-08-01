@@ -15,3 +15,18 @@ test("accepts an SRT field and rejects unrelated output", () => {
   assert.equal(result.path.join("."), "output.srt");
   assert.throws(() => extractApifyCaptionExport({ output: { transcript: "plain text only" } }), /No SRT\/WebVTT/);
 });
+
+test("converts timestamped transcript segments from a local Actor export to WebVTT", () => {
+  const result = extractApifyCaptionExport({
+    transcript: {
+      language: "english",
+      segments: [
+        { start: "00:00:00.000", end: "00:00:01.250", text: "First segment" },
+        { start: 1.25, end: 2.5, text: "Second segment" },
+      ],
+    },
+  });
+  assert.equal(result.path.join("."), "transcript.segments");
+  assert.match(result.text, /WEBVTT/);
+  assert.match(result.text, /00:00:01\.250 --> 00:00:02\.500/);
+});

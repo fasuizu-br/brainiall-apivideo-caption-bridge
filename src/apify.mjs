@@ -7,6 +7,36 @@ function isCaptionText(value) {
   return typeof value === "string" && value.trim().length > 0 && CAPTION_MARKER.test(value);
 }
 
+function cueTime(value) {
+  if (typeof value === "number" && Number.isFinite(value) && value >= 0) {
+    const milliseconds = Math.round(value * 1000);
+    const hours = Math.floor(milliseconds / 3_600_000);
+    const minutes = Math.floor((milliseconds % 3_600_000) / 60_000);
+    const seconds = Math.floor((milliseconds % 60_000) / 1000);
+    const millis = milliseconds % 1000;
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}.${String(millis).padStart(3, "0")}`;
+  }
+  if (typeof value === "string" && /^(?:\d+:)?\d{2}:\d{2}[.,]\d{3}$/.test(value.trim())) {
+    const parts = value.trim().replace(",", ".").split(":");
+    if (parts.length === 2) parts.unshift("00");
+    return parts.map((part, index) => (index === 0 ? part.padStart(2, "0") : part)).join(":");
+  }
+  return null;
+}
+
+function segmentsToWebVtt(segments) {
+  if (!Array.isArray(segments) || segments.length === 0) return null;
+  const cues = [];
+  for (const segment of segments) {
+    const start = cueTime(segment?.start);
+    const end = cueTime(segment?.end);
+    const text = typeof segment?.text === "string" ? segment.text.trim() : "";
+    if (!start || !end || !text || start >= end) return null;
+    cues.push(`${start} --> ${end}\n${text}`);
+  }
+  return `WEBVTT\n\n${cues.join("\n\n")}\n`;
+}
+
 function walk(value, path = [], seen = new Set()) {
   if (typeof value === "string" || value === null || typeof value !== "object") return null;
   if (seen.has(value)) return null;
@@ -18,6 +48,11 @@ function walk(value, path = [], seen = new Set()) {
       if (found) return found;
     }
     return null;
+  }
+
+  if (Array.isArray(value.segments)) {
+    const converted = segmentsToWebVtt(value.segments);
+    if (converted) return { text: converted, path: [...path, "segments"] };
   }
 
   for (const [key, child] of Object.entries(value)) {
