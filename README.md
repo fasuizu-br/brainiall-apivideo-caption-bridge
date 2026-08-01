@@ -9,6 +9,22 @@ This repository does **not** download media, hide a retry, or claim that a lower
 3. Run this bridge server-side to upload the reviewed file to your own api.video video.
 4. Confirm that the caption appears and plays correctly before publishing.
 
+## Existing Apify output, local handoff
+
+If a transcription Actor already produced an SRT or WebVTT field, export that run result
+locally and extract the caption file without calling the Apify API or sending the media to
+BRAINIALL:
+
+```bash
+npx brainiall-apify-caption-extract run-export.json reviewed.vtt
+npx brainiall-apivideo-caption reviewed.vtt vi123 pt-BR
+```
+
+The extractor searches only bounded fields named `vtt`, `webvtt`, `srt`, `caption(s)` or
+`subtitle(s)` and requires a recognizable cue marker. It is a local convenience for an
+authorized run export, not an Apify scraper, a transcription service, or proof of Actor
+ownership, quality, usage, or revenue. Review the complete output before uploading.
+
 api.video documents an important edge case: a malformed WebVTT may receive HTTP 200 but not appear in the player. The bridge therefore rejects missing headers and cue timing before the upload. It still cannot prove semantic accuracy or full WebVTT conformance.
 
 ## Use

@@ -4,7 +4,8 @@
   "description": "Validate a reviewed WebVTT file and upload it once to an authorized api.video video.",
   "type": "module",
   "bin": {
-    "brainiall-apivideo-caption": "src/cli.mjs"
+    "brainiall-apivideo-caption": "src/cli.mjs",
+    "brainiall-apify-caption-extract": "src/extract-cli.mjs"
   },
   "scripts": {
     "test": "node --test"
