@@ -51,6 +51,18 @@ The helper does not contain a video id, media, token or API key, and it does not
 
 `src/lms.mjs` adds the same review-first boundary for Canvas, Moodle, Panopto and YuJa. `planLmsCaptionAcceptance({ lms, language, reviewed })` produces a provider-specific acceptance checklist without a course id, media bytes or account credential. It is a local planning primitive; it does not call an LMS or certify accessibility.
 
+## GitHub Action (C95)
+
+The public repository now exposes a credential-free WebVTT gate for CI:
+
+```yaml
+- uses: fasuizu-br/brainiall-apivideo-caption-bridge@main
+  with:
+    file: artifacts/reviewed.vtt
+```
+
+It only checks the file header, cue timing, size, and at least one cue. It does not upload media, call api.video, or prove semantic accuracy. A Marketplace listing still requires a tagged release and the repository's manual acceptance step.
+
 ## Test
 
 ```bash
