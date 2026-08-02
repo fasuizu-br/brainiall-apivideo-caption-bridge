@@ -1,0 +1,16 @@
+name: BRAINIALL caption QA
+description: Validate a reviewed WebVTT file before a video-platform upload. No credentials or network calls.
+author: BRAINIALL
+branding:
+  color: blue
+  icon: check-circle
+inputs:
+  file:
+    description: Path to one reviewed WebVTT file in the workspace
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Validate WebVTT
+      shell: bash
+      run: node "${{ github.action_path }}/src/qa-cli.mjs" "${{ inputs.file }}"
